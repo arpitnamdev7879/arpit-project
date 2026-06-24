@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TalentGPT — AI-Powered Talent Acquisition</title>
+  <meta name="description" content="Replace resume-based hiring with evidence-based AI analysis of GitHub repositories, code quality, learning velocity and collaboration patterns." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ── Nav ── -->
+  <nav class="nav">
+    <div class="nav-brand">
+      <div class="nav-logo">⚡</div>
+      <span class="nav-name">TalentGPT</span>
+    </div>
+    <div class="nav-links">
+      <button class="nav-btn active" onclick="showPage('home')">Dashboard</button>
+      <button class="nav-btn" onclick="showPage('new-job')">New Job</button>
+      <button class="nav-btn" onclick="showPage('jobs')">All Jobs</button>
+    </div>
+    <div class="nav-status" id="api-status">
+      <div class="status-dot offline"></div>
+      <span>Connecting...</span>
+    </div>
+  </nav>
+
+  <!-- ── Pages ── -->
+  <main class="main">
+
+    <!-- HOME PAGE -->
+    <div id="page-home" class="page active">
+      <div class="hero">
+        <div class="hero-badge">🚀 AI-Powered • Evidence-Based • Zero Bias</div>
+        <h1 class="hero-title">Hire on <span class="gradient-text">Evidence</span>,<br>Not Keywords</h1>
+        <p class="hero-sub">TalentGPT analyzes GitHub repositories, commit patterns, learning velocity, and collaboration quality — not just resumes.</p>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="showPage('new-job')">Start Analysis →</button>
+          <button class="btn-ghost" onclick="showPage('jobs')">View Jobs</button>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><span class="stat-num">15</span><span class="stat-label">Specialized Agents</span></div>
+          <div class="stat"><span class="stat-num">5</span><span class="stat-label">Score Dimensions</span></div>
+          <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Explainable AI</span></div>
+          <div class="stat"><span class="stat-num">60%</span><span class="stat-label">Faster Hiring</span></div>
+        </div>
+      </div>
+
+      <!-- Agent Cards -->
+      <section class="section">
+        <h2 class="section-title">Multi-Agent Architecture</h2>
+        <div class="agents-grid">
+          <div class="agent-card">
+            <div class="agent-icon">🧠</div>
+            <div class="agent-name">JD Analyzer</div>
+            <div class="agent-desc">Extracts skills, seniority, and weights from job descriptions using Gemini AI</div>
+          </div>
+          <div class="agent-card">
+            <div class="agent-icon">🐙</div>
+            <div class="agent-name">GitHub Audit</div>
+            <div class="agent-desc">Deep analysis of repositories, commits, languages, tests, and documentation</div>
+          </div>
+          <div class="agent-card">
+            <div class="agent-icon">🛡️</div>
+            <div class="agent-name">Fraud Detector</div>
+            <div class="agent-desc">Detects star farming, fork abuse, empty repos, and suspicious activity patterns</div>
+          </div>
+          <div class="agent-card">
+            <div class="agent-icon">📊</div>
+            <div class="agent-name">Scoring Engine</div>
+            <div class="agent-desc">5-dimension weighted scoring: Technical, Quality, Velocity, Collaboration, Alignment</div>
+          </div>
+          <div class="agent-card">
+            <div class="agent-icon">💡</div>
+            <div class="agent-name">Explainability</div>
+            <div class="agent-desc">Every score linked to specific commits and evidence. Zero black-box decisions</div>
+          </div>
+          <div class="agent-card">
+            <div class="agent-icon">🎯</div>
+            <div class="agent-name">Interview Gen</div>
+            <div class="agent-desc">Personalized questions based on candidate's actual GitHub projects and skill gaps</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- NEW JOB PAGE -->
+    <div id="page-new-job" class="page">
+      <div class="page-header">
+        <h2 class="page-title">Create New Analysis</h2>
+        <p class="page-sub">Paste a Job Description and GitHub usernames to start AI-powered evaluation</p>
+      </div>
+
+      <div class="form-card">
+        <div class="form-group">
+          <label class="form-label">Job Title</label>
+          <input id="job-title" class="form-input" type="text" placeholder="e.g. Senior ML Engineer" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Job Description</label>
+          <textarea id="jd-text" class="form-textarea" placeholder="Paste the full job description here...
+
+Example:
+We are looking for a Senior ML Engineer to join our AI team.
+
+Requirements:
+- 4+ years of Python experience
+- Strong knowledge of TensorFlow or PyTorch
+- Experience with MLOps, Docker, Kubernetes
+- Familiarity with distributed computing (Ray, Spark)
+- Strong system design skills"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">GitHub Usernames <span class="form-hint">(comma separated)</span></label>
+          <input id="github-users" class="form-input" type="text" placeholder="e.g. torvalds, gvanrossum, yann-lecun" />
+        </div>
+
+        <div class="form-demo-hint">
+          <strong>💡 Try these demo usernames:</strong> torvalds, gvanrossum, karpathy, simonw
+        </div>
+
+        <button class="btn-primary btn-full" onclick="submitJob()" id="submit-btn">
+          🚀 Start AI Analysis
+        </button>
+      </div>
+    </div>
+
+    <!-- JOBS LIST PAGE -->
+    <div id="page-jobs" class="page">
+      <div class="page-header">
+        <h2 class="page-title">All Jobs</h2>
+        <button class="btn-primary btn-sm" onclick="showPage('new-job')">+ New Job</button>
+      </div>
+      <div id="jobs-list" class="jobs-list">
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <p>No jobs yet. <a href="#" onclick="showPage('new-job')">Create your first job →</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTS PAGE -->
+    <div id="page-results" class="page">
+      <div class="page-header">
+        <button class="btn-back" onclick="showPage('jobs')">← Back to Jobs</button>
+        <div>
+          <h2 class="page-title" id="results-job-title">Analysis Results</h2>
+          <p class="page-sub" id="results-subtitle"></p>
+        </div>
+      </div>
+
+      <!-- Progress Bar -->
+      <div id="progress-section" class="progress-section" style="display:none">
+        <div class="progress-card">
+          <div class="progress-icon">⚙️</div>
+          <div class="progress-content">
+            <div class="progress-title">Pipeline Running...</div>
+            <div class="progress-msg" id="progress-msg">Starting agents...</div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ranked Candidates -->
+      <div id="candidates-section" style="display:none">
+        <div class="candidates-header">
+          <h3 class="section-title">Ranked Candidates</h3>
+          <div class="legend">
+            <span class="legend-item"><span class="dot green"></span>Low Risk</span>
+            <span class="legend-item"><span class="dot yellow"></span>Medium Risk</span>
+            <span class="legend-item"><span class="dot red"></span>High Risk</span>
+          </div>
+        </div>
+        <div id="candidates-list" class="candidates-list"></div>
+      </div>
+    </div>
+
+    <!-- CANDIDATE DETAIL PAGE -->
+    <div id="page-candidate" class="page">
+      <div class="page-header">
+        <button class="btn-back" onclick="goBackToResults()">← Back to Results</button>
+      </div>
+      <div id="candidate-detail"></div>
+    </div>
+
+  </main>
+
+  <!-- ── Toast ── -->
+  <div id="toast" class="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
